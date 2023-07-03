@@ -18,4 +18,12 @@ body {
 
 .box {
     border: 1px solid black;
+    width: 150px;
+    height: 150px;
+    display: grid;
+    place-items: center;
+}
+
+.sign {
+    font-size: 5rem;
 }
