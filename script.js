@@ -37,53 +37,58 @@ const gameController = (() => {
         // make move
         gameBoard.setBox(index, getPlayerSign());
 
-        // check if there is a winner or draw
-        // if (isWinner() || isDraw()) {
-        //     isOver = true;
-        //     return;
-        // }
-
         displayController.updateBoard(index);
+
+        console.log(round)
+        console.log("Winner " + isWinner())
+        console.log("Draw " + isDraw())
+
+        // check if there is a winner or draw
+        if (isWinner() || isDraw()) {
+            isOver = true;
+            return;
+        }
 
         round++
 
         // check for draw
-        // isDraw()
+        isDraw()
     }
 
-    // const isWinner = () => {
+    const isWinner = () => {
 
-    //     const winningConditions = [
-    //         [0, 1, 2], // top row
-    //         [3, 4, 5], // middle row
-    //         [6, 7, 8], // bottom row
-    //         [0, 3, 6], // left col
-    //         [1, 4, 7], // middle col
-    //         [2, 5, 8], // right col
-    //         [0, 4, 8], // diagonal top-left to bottom-right
-    //         [2, 4, 6] // diagonal top-right to bottom-left
-    //     ]
+        const winningConditions = [
+            [0, 1, 2], // top row
+            [3, 4, 5], // middle row
+            [6, 7, 8], // bottom row
+            [0, 3, 6], // left col
+            [1, 4, 7], // middle col
+            [2, 5, 8], // right col
+            [0, 4, 8], // diagonal top-left to bottom-right
+            [2, 4, 6] // diagonal top-right to bottom-left
+        ]
 
-    //     // loops through each condition and checks if the game board has a winning condition
-    //     for (let condition of winningConditions) {
-    //         if (gameBoard.getBox(condition[0]) === gameBoard.getBox(condition[1])
-    //             && gameBoard.getBox(condition[1]) === gameBoard.getBox(condition[2])
-    //             && gameBoard.getBox(condition[0]) !== "") {
-    //             return true;
-    //         }
-    //         return false;
-    //     }
-    // }
+        // loops through each condition and checks if the game board has a winning condition
+        for (let condition of winningConditions) {
+            if (gameBoard.getBox(condition[0]) === gameBoard.getBox(condition[1])
+                && gameBoard.getBox(condition[1]) === gameBoard.getBox(condition[2])
+                && gameBoard.getBox(condition[0]) !== "") {
+                return true;
+            }
+        }
 
-    // // draw if 9 rounds are completed and there is no winner
-    // const isDraw = () => {
-    //     return round === 9 && !isWinner;
-    // }
+        return false;
+    }
 
-    // // return boolean for if game is over
-    // const getIsOver = () => {
-    //     return isOver;
-    // }
+    // draw if 9 rounds are completed and there is no winner
+    const isDraw = () => {
+        return round === 9 && !isWinner;
+    }
+
+    // return boolean for if game is over
+    const getIsOver = () => {
+        return isOver;
+    }
 
     // get player sign (if the round is odd, X plays. O plays if even round)
     const getPlayerSign = () => {
@@ -95,29 +100,16 @@ const gameController = (() => {
         isOver = false;
     }
 
-    return { playRound, reset } // getisover
+    return { playRound, getIsOver, reset }
 })();
-
-
-
-
-
-
-
-
-
-
-
-
 
 // module to manipulate DOM
 const displayController = (() => {
     const boxes = document.querySelectorAll(".box");
 
     boxes.forEach(box => box.addEventListener("click", () => {
-
-        // play a round if there's no marker in the box
-        if (!box.firstChild) {
+        // play a round if there's no marker in the box or if game isn't over
+        if (!box.firstChild && !gameController.getIsOver()) {
             gameController.playRound(box.getAttribute("index"));
         }
     }));
