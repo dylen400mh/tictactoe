@@ -13,7 +13,7 @@ const Player = (sign) => {
 
 // game board module
 const gameBoard = (() => {
-    const board = ["X", "X", "X", "X", "X", "X", "X", "X", "X"];
+    const board = ["", "", "", "", "", "", "", "", ""];
 
     const getBox = (index) => {
         return board[index];
@@ -37,8 +37,61 @@ const gameController = (() => {
     const playerX = Player("X");
     const playerO = Player("O");
 
+    let round = 1;
 
+    const playRound = () => {
+        gameBoard.setBox(index, getPlayerSign());
+        round++
+    }
+
+    const isWinner = () => {
+
+        const winningConditions = [
+            [0, 1, 2], // top row
+            [3, 4, 5], // middle row
+            [6, 7, 8], // bottom row
+            [0, 3, 6], // left col
+            [1, 4, 7], // middle col
+            [2, 5, 8], // right col
+            [0, 4, 8], // diagonal top-left to bottom-right
+            [2, 4, 6] // diagonal top-right to bottom-left
+        ]
+
+        // loops through each condition and checks if the game board has a winning condition
+        for (let condition of winningConditions) {
+            if (gameBoard.getBox(condition[0]) === gameBoard.getBox(condition[1])
+                && gameBoard.getBox(condition[1]) === gameBoard.getBox(condition[2])
+                && gameBoard.getBox(condition[0]) !== "") {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    // draw if 9 rounds are completed and there is no winner
+    const isDraw = () => {
+        return round === 9 && !isWinner;
+    }
+
+    // get player sign (if the round is odd, X plays. O plays if even round)
+    const getPlayerSign = () => {
+        return round % 2 === 1 ? playerX.getSign() : playerO.getSign();
+    }
+
+    return { playRound, isWinner, isDraw}
 })();
+
+
+
+
+
+
+
+
+
+
+
+
 
 // module to manipulate DOM
 const displayController = (() => {
