@@ -49,10 +49,11 @@ const gameController = (() => {
             return;
         }
 
-        round++
+
 
         // check for draw
         isDraw()
+        round++
     }
 
     const isWinner = () => {
@@ -82,7 +83,7 @@ const gameController = (() => {
 
     // draw if 9 rounds are completed and there is no winner
     const isDraw = () => {
-        return round === 9 && !isWinner;
+        return (round === 9 && !isWinner());
     }
 
     // return boolean for if game is over
