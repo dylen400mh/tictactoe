@@ -1,13 +1,7 @@
 
 // Player constructor
 const Player = (sign) => {
-    this.sign = sign;
-
-    const getSign = () => {
-        return this.sign;
-    }
-
-    return { getSign };
+    return { sign };
 };
 
 
@@ -39,66 +33,68 @@ const gameController = (() => {
     let isOver = false;
     let round = 1;
 
-    const playRound = () => {
+    const playRound = (index) => {
+        console.log(getPlayerSign() + " playing")
         // make move
         gameBoard.setBox(index, getPlayerSign());
 
         // check if there is a winner or draw
-        if (isWinner() || isDraw()) {
-            isOver = true;
-            return;
-        }
+        // if (isWinner() || isDraw()) {
+        //     isOver = true;
+        //     return;
+        // }
 
         round++
 
         // check for draw
-        isDraw()
+        // isDraw()
     }
 
-    const isWinner = () => {
+    // const isWinner = () => {
 
-        const winningConditions = [
-            [0, 1, 2], // top row
-            [3, 4, 5], // middle row
-            [6, 7, 8], // bottom row
-            [0, 3, 6], // left col
-            [1, 4, 7], // middle col
-            [2, 5, 8], // right col
-            [0, 4, 8], // diagonal top-left to bottom-right
-            [2, 4, 6] // diagonal top-right to bottom-left
-        ]
+    //     const winningConditions = [
+    //         [0, 1, 2], // top row
+    //         [3, 4, 5], // middle row
+    //         [6, 7, 8], // bottom row
+    //         [0, 3, 6], // left col
+    //         [1, 4, 7], // middle col
+    //         [2, 5, 8], // right col
+    //         [0, 4, 8], // diagonal top-left to bottom-right
+    //         [2, 4, 6] // diagonal top-right to bottom-left
+    //     ]
 
-        // loops through each condition and checks if the game board has a winning condition
-        for (let condition of winningConditions) {
-            if (gameBoard.getBox(condition[0]) === gameBoard.getBox(condition[1])
-                && gameBoard.getBox(condition[1]) === gameBoard.getBox(condition[2])
-                && gameBoard.getBox(condition[0]) !== "") {
-                return true;
-            }
-            return false;
-        }
-    }
+    //     // loops through each condition and checks if the game board has a winning condition
+    //     for (let condition of winningConditions) {
+    //         if (gameBoard.getBox(condition[0]) === gameBoard.getBox(condition[1])
+    //             && gameBoard.getBox(condition[1]) === gameBoard.getBox(condition[2])
+    //             && gameBoard.getBox(condition[0]) !== "") {
+    //             return true;
+    //         }
+    //         return false;
+    //     }
+    // }
 
-    // draw if 9 rounds are completed and there is no winner
-    const isDraw = () => {
-        return round === 9 && !isWinner;
-    }
+    // // draw if 9 rounds are completed and there is no winner
+    // const isDraw = () => {
+    //     return round === 9 && !isWinner;
+    // }
 
-    // return boolean for if game is over
-    const getIsOver = () => {
-        return isOver;
-    }
+    // // return boolean for if game is over
+    // const getIsOver = () => {
+    //     return isOver;
+    // }
 
     // get player sign (if the round is odd, X plays. O plays if even round)
     const getPlayerSign = () => {
-        return round % 2 === 1 ? playerX.getSign() : playerO.getSign();
+        return round % 2 === 1 ? playerX.sign : playerO.sign;
     }
 
     const reset = () => {
-        let round = 1;
+        round = 1;
+        isOver = false;
     }
 
-    return { playRound, getIsOver, reset }
+    return { playRound, reset } // getisover
 })();
 
 
@@ -117,9 +113,11 @@ const gameController = (() => {
 const displayController = (() => {
     const boxes = document.querySelectorAll(".box");
 
-    // populates boxes on screen with signs based on board array values
-    const populateBoard = () => {
+    boxes.forEach(box => box.addEventListener("click", () => gameController.playRound(box.getAttribute("index"))));
+    console.log("event added")
 
+    // update boxes on screen with signs based on board array values
+    const updateBoard = () => {
         // loops through each box and adds the sign to it
         for (let i = 0; i < boxes.length; i++) {
             const box = boxes[i];
@@ -132,6 +130,9 @@ const displayController = (() => {
         }
     }
 
-    populateBoard();
+
+
+
+    return { updateBoard }
 })();
 
