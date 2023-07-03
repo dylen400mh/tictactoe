@@ -10,22 +10,6 @@ const Player = (sign) => {
     return { getSign };
 };
 
-// populates boxes on screen with signs based on board array values
-const populateBoard = () => {
-
-    const boxes = document.querySelectorAll(".box");
-
-    // loops through each box and adds the sign to it
-    for (let i = 0; i < boxes.length; i++) {
-        const box = boxes[i];
-
-        const sign = document.createElement("div");
-        sign.classList.add("sign");
-        sign.textContent = gameBoard.getBox(i);
-
-        box.appendChild(sign);
-    }
-}
 
 // game board module
 const gameBoard = (() => {
@@ -58,8 +42,23 @@ const gameController = (() => {
 
 // module to manipulate DOM
 const displayController = (() => {
+    const boxes = document.querySelectorAll(".box");
+
+    // populates boxes on screen with signs based on board array values
+    const populateBoard = () => {
+
+        // loops through each box and adds the sign to it
+        for (let i = 0; i < boxes.length; i++) {
+            const box = boxes[i];
+
+            const sign = document.createElement("div");
+            sign.classList.add("sign");
+            sign.textContent = gameBoard.getBox(i);
+
+            box.appendChild(sign);
+        }
+    }
+
     populateBoard();
-
-
 })();
 
