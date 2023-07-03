@@ -34,7 +34,6 @@ const gameController = (() => {
     let round = 1;
 
     const playRound = (index) => {
-        console.log(getPlayerSign() + " playing")
         // make move
         gameBoard.setBox(index, getPlayerSign());
 
@@ -43,6 +42,8 @@ const gameController = (() => {
         //     isOver = true;
         //     return;
         // }
+
+        displayController.updateBoard(index);
 
         round++
 
@@ -114,24 +115,17 @@ const displayController = (() => {
     const boxes = document.querySelectorAll(".box");
 
     boxes.forEach(box => box.addEventListener("click", () => gameController.playRound(box.getAttribute("index"))));
-    console.log("event added")
 
     // update boxes on screen with signs based on board array values
-    const updateBoard = () => {
-        // loops through each box and adds the sign to it
-        for (let i = 0; i < boxes.length; i++) {
-            const box = boxes[i];
+    const updateBoard = (index) => {
+        const box = boxes[index];
 
-            const sign = document.createElement("div");
-            sign.classList.add("sign");
-            sign.textContent = gameBoard.getBox(i);
-
-            box.appendChild(sign);
-        }
+        const sign = document.createElement("div");
+        sign.classList.add("sign");
+        sign.textContent = gameBoard.getBox(index);
+        
+        box.appendChild(sign);
     }
-
-
-
 
     return { updateBoard }
 })();
