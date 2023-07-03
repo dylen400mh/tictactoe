@@ -36,12 +36,23 @@ const gameBoard = (() => {
 const gameController = (() => {
     const playerX = Player("X");
     const playerO = Player("O");
-
+    let isOver = false;
     let round = 1;
 
     const playRound = () => {
+        // make move
         gameBoard.setBox(index, getPlayerSign());
+
+        // check if there is a winner or draw
+        if (isWinner() || isDraw()) {
+            isOver = true;
+            return;
+        }
+
         round++
+
+        // check for draw
+        isDraw()
     }
 
     const isWinner = () => {
@@ -73,12 +84,21 @@ const gameController = (() => {
         return round === 9 && !isWinner;
     }
 
+    // return boolean for if game is over
+    const getIsOver = () => {
+        return isOver;
+    }
+
     // get player sign (if the round is odd, X plays. O plays if even round)
     const getPlayerSign = () => {
         return round % 2 === 1 ? playerX.getSign() : playerO.getSign();
     }
 
-    return { playRound, isWinner, isDraw}
+    const reset = () => {
+        let round = 1;
+    }
+
+    return { playRound, getIsOver, reset }
 })();
 
 
