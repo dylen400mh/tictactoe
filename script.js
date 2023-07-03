@@ -114,7 +114,14 @@ const gameController = (() => {
 const displayController = (() => {
     const boxes = document.querySelectorAll(".box");
 
-    boxes.forEach(box => box.addEventListener("click", () => gameController.playRound(box.getAttribute("index"))));
+    boxes.forEach(box => box.addEventListener("click", () => {
+
+        // play a round if there's no marker in the box
+        if (!box.firstChild) {
+            gameController.playRound(box.getAttribute("index"));
+        }
+    }));
+
 
     // update boxes on screen with signs based on board array values
     const updateBoard = (index) => {
@@ -123,7 +130,7 @@ const displayController = (() => {
         const sign = document.createElement("div");
         sign.classList.add("sign");
         sign.textContent = gameBoard.getBox(index);
-        
+
         box.appendChild(sign);
     }
 
