@@ -7,13 +7,19 @@
 
 * {
     --background-color: #95B8D1;
+    --hover-color: #8aafca;
+    --text-color: #eecc50;
+    --shadow: 3px 3px 5px black;
+
     font-family: arcade, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     background: var(--background-color);
+    color: var(--text-color);
+    text-shadow: var(--shadow);
 }
 
 body {
     margin: 0;
-    
+
 }
 
 .container {
@@ -49,4 +55,11 @@ body {
 .restart-button {
     width: 10rem;
     border: none;
+}
+
+.box:hover,
+.box:hover .sign,
+.restart-button:hover,
+.restart-button:hover h1 {
+    background: var(--hover-color);
 }
