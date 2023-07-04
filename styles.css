@@ -20,10 +20,14 @@ body {
 
 }
 
+header {
+    text-align: center;
+    font-size: 5rem;
+}
+
 .container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
     align-items: center;
     justify-content: center;
     gap: 2rem;
