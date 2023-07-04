@@ -48,4 +48,5 @@ body {
 
 .restart-button {
     width: 10rem;
+    border: none;
 }
