@@ -3,12 +3,17 @@
     src: url(fonts/ARCADECLASSIC.TTF);
 }
 
+
+
 * {
+    --background-color: #95B8D1;
     font-family: arcade, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background: var(--background-color);
 }
 
 body {
     margin: 0;
+    
 }
 
 .container {
