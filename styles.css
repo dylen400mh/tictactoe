@@ -1,3 +1,12 @@
+@font-face {
+    font-family: arcade;
+    src: url(fonts/ARCADECLASSIC.TTF);
+}
+
+* {
+    font-family: arcade, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
 body {
     margin: 0;
 }
@@ -17,7 +26,7 @@ body {
     grid-template-columns: repeat(3, 150px);
     grid-template-rows: repeat(3, 150px);
     width: 450px;
-    
+
 }
 
 .box {
