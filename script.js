@@ -1,4 +1,3 @@
-
 // Player constructor
 const Player = (sign) => {
     return { sign };
@@ -26,6 +25,59 @@ const gameBoard = (() => {
     return { getBox, setBox, reset };
 })();
 
+
+
+
+// module to manipulate DOM
+const displayController = (() => {
+    const boxes = document.querySelectorAll(".box");
+    const restartButton = document.querySelector(".restart-button");
+    const messageContainer = document.querySelector(".message");
+
+    boxes.forEach(box => box.addEventListener("click", () => {
+        // play a round if there's no marker in the box or if game isn't over
+        if (!box.firstChild && !gameController.getIsOver()) {
+            gameController.playRound(box.getAttribute("index"));
+        }
+    }));
+
+    // clear board and restart game when reset button is clicked
+    restartButton.addEventListener("click", () => {
+        clearBoard();
+        gameController.reset();
+    })
+
+    // update boxes on screen with signs based on board array values
+    const updateBoard = (index) => {
+        const box = boxes[index];
+
+        const sign = document.createElement("div");
+        sign.classList.add("sign");
+        sign.textContent = gameBoard.getBox(index);
+
+        box.appendChild(sign);
+    }
+
+    // clears board for next match
+    const clearBoard = () => {
+        for (let box of boxes) {
+            //if there is a sign in the box, remove it
+            if (box.firstChild) {
+                box.removeChild(box.firstChild);
+            }
+        }
+    }
+
+    const setMessage = (message) => {
+        messageContainer.textContent = message;
+    }
+
+    return { updateBoard, setMessage }
+})();
+
+
+
+
 // game module
 const gameController = (() => {
     const playerX = Player("X");
@@ -33,21 +85,28 @@ const gameController = (() => {
     let isOver = false;
     let round = 1;
 
+    displayController.setMessage(`PLAYER X'S TURN`);
+
     const playRound = (index) => {
         // make move
         gameBoard.setBox(index, getPlayerSign());
 
         displayController.updateBoard(index);
 
-        // check if there is a winner or draw
-        if (isWinner() || isDraw()) {
+        // check if there is a winner or draw and update message accordingly
+        if (isWinner()) {
+            displayController.setMessage(`WINNER: PLAYER ${getPlayerSign()}!`)
             isOver = true;
+            return;
+        } else if (isDraw()) {
+            displayController.setMessage("DRAW!")
             return;
         }
 
-        // check for draw
-        isDraw()
         round++
+
+        // set message for next turn
+        displayController.setMessage(`PLAYER ${getPlayerSign()}'S TURN`)
     }
 
     const isWinner = () => {
@@ -90,55 +149,18 @@ const gameController = (() => {
         return round % 2 === 1 ? playerX.sign : playerO.sign;
     }
 
+    // reset variables for next round
     const reset = () => {
         round = 1;
         isOver = false;
 
         gameBoard.reset();
+        displayController.setMessage(`Player X's Turn`);
     }
 
     return { playRound, getIsOver, reset }
 })();
 
-// module to manipulate DOM
-const displayController = (() => {
-    const boxes = document.querySelectorAll(".box");
-    const restartButton = document.querySelector(".restart-button");
 
-    boxes.forEach(box => box.addEventListener("click", () => {
-        // play a round if there's no marker in the box or if game isn't over
-        if (!box.firstChild && !gameController.getIsOver()) {
-            gameController.playRound(box.getAttribute("index"));
-        }
-    }));
 
-    // clear board and restart game when reset button is clicked
-    restartButton.addEventListener("click", () => {
-        clearBoard();
-        gameController.reset();
-    })
-
-    // update boxes on screen with signs based on board array values
-    const updateBoard = (index) => {
-        const box = boxes[index];
-
-        const sign = document.createElement("div");
-        sign.classList.add("sign");
-        sign.textContent = gameBoard.getBox(index);
-
-        box.appendChild(sign);
-    }
-
-    // clears board for next match
-    const clearBoard = () => {
-        for (let box of boxes) {
-            //if there is a sign in the box, remove it
-            if (box.firstChild) {
-                box.removeChild(box.firstChild);
-            }
-        }
-    }
-
-    return { updateBoard }
-})();
 
