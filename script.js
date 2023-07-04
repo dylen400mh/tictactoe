@@ -32,7 +32,7 @@ const displayController = (() => {
 
     boxes.forEach(box => box.addEventListener("click", () => {
         // play a round if there's no marker in the box or if game isn't over
-        if (!box.firstChild && !gameController.isOver) {
+        if (!box.firstChild && !gameController.getIsOver()) {
             gameController.playRound(box.getAttribute("index"));
         }
     }));
@@ -99,6 +99,7 @@ const gameController = (() => {
             return;
         } else if (isDraw()) {
             displayController.setMessage("DRAW!")
+            isOver = true;
             return;
         }
 
@@ -152,7 +153,11 @@ const gameController = (() => {
         displayController.setMessage(`PLAYER X'S TURN`);
     }
 
-    return { playRound, isOver, reset }
+    const getIsOver = () => {
+        return isOver;
+    }
+
+    return { playRound, getIsOver, reset }
 })();
 
 
