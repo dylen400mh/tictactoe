@@ -3,8 +3,6 @@
     src: url(fonts/ARCADECLASSIC.TTF);
 }
 
-
-
 * {
     --background-color: #95B8D1;
     --hover-color: #8aafca;
@@ -61,5 +59,6 @@ body {
 .box:hover .sign,
 .restart-button:hover,
 .restart-button:hover h1 {
+    cursor: pointer;
     background: var(--hover-color);
 }
