@@ -3,7 +3,6 @@ const Player = (sign) => {
     return { sign };
 };
 
-
 // game board module
 const gameBoard = (() => {
     const board = ["", "", "", "", "", "", "", "", ""];
@@ -25,9 +24,6 @@ const gameBoard = (() => {
     return { getBox, setBox, reset };
 })();
 
-
-
-
 // module to manipulate DOM
 const displayController = (() => {
     const boxes = document.querySelectorAll(".box");
@@ -36,7 +32,7 @@ const displayController = (() => {
 
     boxes.forEach(box => box.addEventListener("click", () => {
         // play a round if there's no marker in the box or if game isn't over
-        if (!box.firstChild && !gameController.getIsOver()) {
+        if (!box.firstChild && !gameController.isOver) {
             gameController.playRound(box.getAttribute("index"));
         }
     }));
@@ -70,9 +66,7 @@ const displayController = (() => {
 
     const setMessage = (message) => {
         //remove existing message
-        if (messageContainer.firstChild) {
-            messageContainer.removeChild(messageContainer.firstChild);
-        }
+        if (messageContainer.firstChild) messageContainer.removeChild(messageContainer.firstChild);
 
         // add new message
         const h1 = document.createElement("h1");
@@ -144,11 +138,6 @@ const gameController = (() => {
         return (round === 9 && !isWinner());
     }
 
-    // return boolean for if game is over
-    const getIsOver = () => {
-        return isOver;
-    }
-
     // get player sign (if the round is odd, X plays. O plays if even round)
     const getPlayerSign = () => {
         return round % 2 === 1 ? playerX.sign : playerO.sign;
@@ -163,7 +152,7 @@ const gameController = (() => {
         displayController.setMessage(`PLAYER X'S TURN`);
     }
 
-    return { playRound, getIsOver, reset }
+    return { playRound, isOver, reset }
 })();
 
 
