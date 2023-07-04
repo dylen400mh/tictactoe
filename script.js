@@ -39,17 +39,11 @@ const gameController = (() => {
 
         displayController.updateBoard(index);
 
-        console.log(round)
-        console.log("Winner " + isWinner())
-        console.log("Draw " + isDraw())
-
         // check if there is a winner or draw
         if (isWinner() || isDraw()) {
             isOver = true;
             return;
         }
-
-
 
         // check for draw
         isDraw()
@@ -99,6 +93,8 @@ const gameController = (() => {
     const reset = () => {
         round = 1;
         isOver = false;
+
+        gameBoard.reset();
     }
 
     return { playRound, getIsOver, reset }
@@ -107,6 +103,7 @@ const gameController = (() => {
 // module to manipulate DOM
 const displayController = (() => {
     const boxes = document.querySelectorAll(".box");
+    const restartButton = document.querySelector(".restart-button");
 
     boxes.forEach(box => box.addEventListener("click", () => {
         // play a round if there's no marker in the box or if game isn't over
@@ -115,6 +112,11 @@ const displayController = (() => {
         }
     }));
 
+    // clear board and restart game when reset button is clicked
+    restartButton.addEventListener("click", () => {
+        clearBoard();
+        gameController.reset();
+    })
 
     // update boxes on screen with signs based on board array values
     const updateBoard = (index) => {
@@ -125,6 +127,16 @@ const displayController = (() => {
         sign.textContent = gameBoard.getBox(index);
 
         box.appendChild(sign);
+    }
+
+    // clears board for next match
+    const clearBoard = () => {
+        for (let box of boxes) {
+            //if there is a sign in the box, remove it
+            if (box.firstChild) {
+                box.removeChild(box.firstChild);
+            }
+        }
     }
 
     return { updateBoard }

@@ -4,7 +4,11 @@ body {
 
 .container {
     display: flex;
+    flex-direction: column;
     height: 100vh;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
 }
 
 .board {
@@ -13,7 +17,7 @@ body {
     grid-template-columns: repeat(3, 150px);
     grid-template-rows: repeat(3, 150px);
     width: 450px;
-    margin: auto;
+    
 }
 
 .box {
@@ -26,4 +30,8 @@ body {
 
 .sign {
     font-size: 5rem;
+}
+
+.restart-button {
+    width: 10rem;
 }
