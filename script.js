@@ -32,7 +32,7 @@ const gameBoard = (() => {
 const displayController = (() => {
     const boxes = document.querySelectorAll(".box");
     const restartButton = document.querySelector(".restart-button");
-    const messageContainer = document.querySelector(".message");
+    const messageContainer = document.querySelector(".message-container");
 
     boxes.forEach(box => box.addEventListener("click", () => {
         // play a round if there's no marker in the box or if game isn't over
@@ -69,14 +69,19 @@ const displayController = (() => {
     }
 
     const setMessage = (message) => {
-        messageContainer.textContent = message;
+        //remove existing message
+        if (messageContainer.firstChild) {
+            messageContainer.removeChild(messageContainer.firstChild);
+        }
+
+        // add new message
+        const h1 = document.createElement("h1");
+        h1.textContent = message;
+        messageContainer.appendChild(h1);
     }
 
     return { updateBoard, setMessage }
 })();
-
-
-
 
 // game module
 const gameController = (() => {
@@ -155,7 +160,7 @@ const gameController = (() => {
         isOver = false;
 
         gameBoard.reset();
-        displayController.setMessage(`Player X's Turn`);
+        displayController.setMessage(`PLAYER X'S TURN`);
     }
 
     return { playRound, getIsOver, reset }
