@@ -54,15 +54,16 @@ header {
     font-size: 5rem;
 }
 
-.restart-button {
+button {
+    max-width: 150px;
     width: 10rem;
     border: none;
 }
 
 .box:hover,
 .box:hover .sign,
-.restart-button:hover,
-.restart-button:hover h1 {
+button:hover,
+button:hover h1 {
     cursor: pointer;
     background: var(--hover-color);
 }

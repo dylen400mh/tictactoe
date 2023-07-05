@@ -160,6 +160,3 @@ const gameController = (() => {
     return { playRound, getIsOver, reset }
 })();
 
-
-
-
