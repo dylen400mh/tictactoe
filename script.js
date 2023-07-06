@@ -29,6 +29,8 @@ const displayController = (() => {
     const boxes = document.querySelectorAll(".box");
     const restartButton = document.querySelector(".restart-button");
     const messageContainer = document.querySelector(".message-container");
+    const aiButton = document.querySelector(".ai-button h1");
+    const playerButton = document.querySelector(".player-button h1");
 
     boxes.forEach(box => box.addEventListener("click", () => {
         // play a round if there's no marker in the box or if game isn't over
@@ -41,6 +43,38 @@ const displayController = (() => {
     restartButton.addEventListener("click", () => {
         clearBoard();
         gameController.reset();
+    })
+
+    aiButton.addEventListener("click", () => {
+        if (gameController.getMode() !== 1) {
+            // "unselect" other box
+            playerButton.removeAttribute("style");
+
+            //reset game
+            clearBoard();
+            gameController.reset();
+
+            // switch gamemode and set "selected" styles
+            gameController.setMode(1);
+            aiButton.style.background = "#eecc50";
+            aiButton.style.color = "#95B8D1";
+        }
+    })
+
+    playerButton.addEventListener("click", () => {
+        if (gameController.getMode() !== 2) {
+            // "unselect" other box
+            aiButton.removeAttribute("style");
+
+            //reset game
+            clearBoard();
+            gameController.reset();
+
+            // switch gamemode and set "selected" styles
+            gameController.setMode(2);
+            playerButton.style.background = "#eecc50";
+            playerButton.style.color = "#95B8D1";
+        }
     })
 
     // update boxes on screen with signs based on board array values
@@ -83,30 +117,39 @@ const gameController = (() => {
     const playerO = Player("O");
     let isOver = false;
     let round = 1;
+    let mode = 0; // gamemode starts as 0 -> changes to 1 or 2 based on the gamemode selected
 
-    displayController.setMessage(`PLAYER X'S TURN`);
+    displayController.setMessage("SELECT GAMEMODE");
 
     const playRound = (index) => {
-        // make move
-        gameBoard.setBox(index, getPlayerSign());
 
-        displayController.updateBoard(index);
-
-        // check if there is a winner or draw and update message accordingly
-        if (isWinner()) {
-            displayController.setMessage(`WINNER: PLAYER ${getPlayerSign()}!`)
-            isOver = true;
-            return;
-        } else if (isDraw()) {
-            displayController.setMessage("DRAW!")
-            isOver = true;
-            return;
+        if (mode === 1) {
+            console.log("Single player code here")
         }
 
-        round++
+        // multi-player logic
+        else if (mode === 2) {
+            // make move
+            gameBoard.setBox(index, getPlayerSign());
 
-        // set message for next turn
-        displayController.setMessage(`PLAYER ${getPlayerSign()}'S TURN`)
+            displayController.updateBoard(index);
+
+            // check if there is a winner or draw and update message accordingly
+            if (isWinner()) {
+                displayController.setMessage(`WINNER: PLAYER ${getPlayerSign()}!`)
+                isOver = true;
+                return;
+            } else if (isDraw()) {
+                displayController.setMessage("DRAW!")
+                isOver = true;
+                return;
+            }
+
+            round++
+
+            // set message for next turn
+            displayController.setMessage(`PLAYER ${getPlayerSign()}'S TURN`)
+        }
     }
 
     const isWinner = () => {
@@ -157,6 +200,14 @@ const gameController = (() => {
         return isOver;
     }
 
-    return { playRound, getIsOver, reset }
+    const getMode = () => {
+        return mode;
+    }
+
+    const setMode = (md) => {
+        mode = md;
+    }
+
+    return { playRound, getIsOver, reset, getMode, setMode }
 })();
 

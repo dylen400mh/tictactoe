@@ -54,11 +54,17 @@ header {
     font-size: 5rem;
 }
 
+.buttons {
+    display: flex;
+}
+
 button {
     max-width: 150px;
     width: 10rem;
     border: none;
 }
+
+
 
 .box:hover,
 .box:hover .sign,
