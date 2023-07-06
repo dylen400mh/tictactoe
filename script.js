@@ -56,8 +56,7 @@ const displayController = (() => {
 
             // switch gamemode and set "selected" styles
             gameController.setMode(1);
-            aiButton.style.background = "#eecc50";
-            aiButton.style.color = "#95B8D1";
+            aiButton.style.border = "5px solid #eecc50"
         }
     })
 
@@ -72,8 +71,7 @@ const displayController = (() => {
 
             // switch gamemode and set "selected" styles
             gameController.setMode(2);
-            playerButton.style.background = "#eecc50";
-            playerButton.style.color = "#95B8D1";
+            playerButton.style.border = "5px solid #eecc50"
         }
     })
 

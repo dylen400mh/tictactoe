@@ -64,7 +64,9 @@ button {
     border: none;
 }
 
-
+button h1 {
+    border-radius: 10px;
+}
 
 .box:hover,
 .box:hover .sign,
