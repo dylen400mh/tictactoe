@@ -48,43 +48,37 @@ const displayController = (() => {
 
     // switches gamemode to singleplayer
     aiButton.addEventListener("click", () => {
-        if (gameController.getMode() === 0) {
-            initializeDisplay();
-        }
-
-        else if (gameController.getMode() !== 1) {
-            // "unselect" other box
-            playerButton.removeAttribute("style");
-
-            //reset game
-            clearBoard();
-            gameController.reset();
-        }
-
-        // switch gamemode and set "selected" styles
-        gameController.setMode(1);
-        aiButton.style.border = "5px solid #eecc50"
+        switchMode(1, aiButton);
     })
 
     // switches gamemode to multiplayer
     playerButton.addEventListener("click", () => {
+        switchMode(2, playerButton);
+    })
+
+    // switches displayed gamemode
+    const switchMode = (mode, button) => {
         if (gameController.getMode() === 0) {
             initializeDisplay();
         }
 
-        else if (gameController.getMode() !== 2) {
+        else if (gameController.getMode() !== mode) {
             // "unselect" other box
-            aiButton.removeAttribute("style");
+
+            if (button === playerButton) {
+                aiButton.removeAttribute("style");
+            } else if (button === aiButton) {
+                playerButton.removeAttribute("style");
+            }
 
             //reset game
             clearBoard();
             gameController.reset();
         }
 
-        // switch gamemode and set "selected" styles
-        gameController.setMode(2);
-        playerButton.style.border = "5px solid #eecc50"
-    })
+        gameController.setMode(mode);
+        button.style.border = "5px solid #eecc50"
+    }
 
     // adds board and restart button to screen and changes message
     const initializeDisplay = () => {
