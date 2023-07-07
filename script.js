@@ -43,8 +43,8 @@ const gameBoard = (() => {
         return bestMove;
     }
 
-    // used to get the evaluation score of the current state of the board
-    const evaluate = (board) => {
+    // used to get the evaluation score of the current state of the board (determines if there is a winner)
+    const evaluate = () => {
         // Winning combinations
         const lines = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
@@ -107,7 +107,7 @@ const gameBoard = (() => {
         }
     }
 
-    return { getBox, setBox, reset, findBestMove };
+    return { getBox, setBox, reset, findBestMove, evaluate };
 })();
 
 // module to manipulate DOM
@@ -121,7 +121,7 @@ const displayController = (() => {
 
     boxes.forEach(box => box.addEventListener("click", () => {
         // play a round if there's no marker in the box or if game isn't over
-        if (!box.firstChild && !gameController.getIsOver()) {
+        if (!box.firstChild && !gameController.checkGameOver()) {
             gameController.playRound(box.getAttribute("index"));
         }
     }));
@@ -207,7 +207,6 @@ const displayController = (() => {
 const gameController = (() => {
     const playerX = Player("X");
     const playerO = Player("O");
-    let isOver = false;
     let round = 1;
     let mode = 0; // gamemode starts as 0 -> changes to 1 or 2 based on the gamemode selected
 
@@ -222,16 +221,7 @@ const gameController = (() => {
 
         displayController.updateBoard(index);
 
-        // check if there is a winner or draw and update message accordingly
-        if (isWinner()) {
-            displayController.setMessage(`WINNER: PLAYER ${getPlayerSign()}!`)
-            isOver = true;
-            return;
-        } else if (isDraw()) {
-            displayController.setMessage("DRAW!")
-            isOver = true;
-            return;
-        }
+        if (checkGameOver()) return;
 
         round++
 
@@ -242,16 +232,8 @@ const gameController = (() => {
 
             displayController.updateBoard(bestIndex);
 
-            // check if there is a winner or draw and update message accordingly
-            if (isWinner()) {
-                displayController.setMessage(`WINNER: PLAYER ${getPlayerSign()}!`)
-                isOver = true;
-                return;
-            } else if (isDraw()) {
-                displayController.setMessage("DRAW!")
-                isOver = true;
-                return;
-            }
+
+            if (checkGameOver()) return;
 
             round++
         }
@@ -260,34 +242,21 @@ const gameController = (() => {
         displayController.setMessage(`PLAYER ${getPlayerSign()}'S TURN`)
     }
 
-    const isWinner = () => {
-
-        const winningConditions = [
-            [0, 1, 2], // top row
-            [3, 4, 5], // middle row
-            [6, 7, 8], // bottom row
-            [0, 3, 6], // left col
-            [1, 4, 7], // middle col
-            [2, 5, 8], // right col
-            [0, 4, 8], // diagonal top-left to bottom-right
-            [2, 4, 6] // diagonal top-right to bottom-left
-        ]
-
-        // loops through each condition and checks if the game board has a winning condition
-        for (let condition of winningConditions) {
-            if (gameBoard.getBox(condition[0]) === gameBoard.getBox(condition[1])
-                && gameBoard.getBox(condition[1]) === gameBoard.getBox(condition[2])
-                && gameBoard.getBox(condition[0]) !== "") {
-                return true;
-            }
+    // check if there is a winner or draw and update message accordingly
+    // 0: DRAW, 1: O WINS, -1: X WINS
+    const checkGameOver = () => {
+        if (gameBoard.evaluate() === 0) {
+            displayController.setMessage("DRAW!");
+            return true;
         }
-
-        return false;
-    }
-
-    // draw if 9 rounds are completed and there is no winner
-    const isDraw = () => {
-        return (round === 9 && !isWinner());
+        if (gameBoard.evaluate() === -1) {
+            displayController.setMessage("WINNER: PLAYER X!")
+            return true;
+        }
+        if (gameBoard.evaluate() === 1) {
+            displayController.setMessage("WINNER: PLAYER O!")
+            return true;
+        }
     }
 
     // get player sign (if the round is odd, X plays. O plays if even round)
@@ -304,10 +273,6 @@ const gameController = (() => {
         displayController.setMessage(`PLAYER X'S TURN`);
     }
 
-    const getIsOver = () => {
-        return isOver;
-    }
-
     const getMode = () => {
         return mode;
     }
@@ -316,6 +281,6 @@ const gameController = (() => {
         mode = md;
     }
 
-    return { playRound, getIsOver, reset, getMode, setMode }
+    return { playRound, checkGameOver, reset, getMode, setMode }
 })();
 
