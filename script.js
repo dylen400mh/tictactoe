@@ -22,20 +22,20 @@ const gameBoard = (() => {
     }
 
     // returns index of best move on board
-    const findBestMove = (board) => {
+    const findBestMove = () => {
         let bestScore = -Infinity; // evaluation score of best move
         let bestMove = -1 // index of best move
 
         // loop through board looking for empty spots
         for (let i = 0; i < board.length; i++) {
             if (board[i] === "") {
-                board[i] === "O"; // try a move for player O (AI)
+                board[i] = "O"; // try a move for player O (AI)
                 const score = minimax(board, 9, false) // "X" plays next and is minimizing
                 board[i] = ""; // undo the move
 
                 // overwrite the score and index if it is a better move
                 if (score > bestScore) {
-                    bestEval = score;
+                    bestScore = score;
                     bestMove = i;
                 }
             }
@@ -75,7 +75,7 @@ const gameBoard = (() => {
 
         // Base cases: game over or maximum depth reached
         if (result !== null || depth === 0) {
-            return result;
+            return result * depth;
         }
 
         // if maximizing player
@@ -103,7 +103,7 @@ const gameBoard = (() => {
                     minScore = Math.min(minScore, score);
                 }
             }
-            return minEval;
+            return minScore;
         }
     }
 
@@ -215,16 +215,32 @@ const gameController = (() => {
 
     const playRound = (index) => {
 
-        if (mode === 1) {
-            console.log("Single player code here")
+        // multi-player logic
+
+        // make move
+        gameBoard.setBox(index, getPlayerSign());
+
+        displayController.updateBoard(index);
+
+        // check if there is a winner or draw and update message accordingly
+        if (isWinner()) {
+            displayController.setMessage(`WINNER: PLAYER ${getPlayerSign()}!`)
+            isOver = true;
+            return;
+        } else if (isDraw()) {
+            displayController.setMessage("DRAW!")
+            isOver = true;
+            return;
         }
 
-        // multi-player logic
-        else if (mode === 2) {
-            // make move
-            gameBoard.setBox(index, getPlayerSign());
+        round++
 
-            displayController.updateBoard(index);
+        // if single-player, AI takes a turn
+        if (mode === 1) {
+            let bestIndex = gameBoard.findBestMove();
+            gameBoard.setBox(bestIndex, getPlayerSign());
+
+            displayController.updateBoard(bestIndex);
 
             // check if there is a winner or draw and update message accordingly
             if (isWinner()) {
@@ -238,10 +254,10 @@ const gameController = (() => {
             }
 
             round++
-
-            // set message for next turn
-            displayController.setMessage(`PLAYER ${getPlayerSign()}'S TURN`)
         }
+
+        // set message for next turn
+        displayController.setMessage(`PLAYER ${getPlayerSign()}'S TURN`)
     }
 
     const isWinner = () => {
