@@ -49,10 +49,7 @@ const displayController = (() => {
     // switches gamemode to singleplayer
     aiButton.addEventListener("click", () => {
         if (gameController.getMode() === 0) {
-            // adds board and restart button to screen and changes message
-            board.style.display = "grid";
-            restartButton.style.display = "block"
-            displayController.setMessage(`PLAYER X'S TURN`)
+            initializeDisplay();
         }
 
         else if (gameController.getMode() !== 1) {
@@ -72,10 +69,7 @@ const displayController = (() => {
     // switches gamemode to multiplayer
     playerButton.addEventListener("click", () => {
         if (gameController.getMode() === 0) {
-            // adds board and restart button to screen and changes message
-            board.style.display = "grid";
-            restartButton.style.display = "block"
-            displayController.setMessage(`PLAYER X'S TURN`)
+            initializeDisplay();
         }
 
         else if (gameController.getMode() !== 2) {
@@ -92,7 +86,12 @@ const displayController = (() => {
         playerButton.style.border = "5px solid #eecc50"
     })
 
-
+    // adds board and restart button to screen and changes message
+    const initializeDisplay = () => {
+        board.style.display = "grid";
+        restartButton.style.display = "block"
+        displayController.setMessage(`PLAYER X'S TURN`)
+    }
 
     // update boxes on screen with signs based on board array values
     const updateBoard = (index) => {
