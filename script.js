@@ -75,7 +75,7 @@ const gameBoard = (() => {
 
         // Base cases: game over or maximum depth reached
         if (result !== null || depth === 0) {
-            return result * depth;
+            return result * depth; // used to prioritize moves found at a higher depth
         }
 
         // if maximizing player
@@ -267,7 +267,6 @@ const gameController = (() => {
     // reset variables for next round
     const reset = () => {
         round = 1;
-        isOver = false;
 
         gameBoard.reset();
         displayController.setMessage(`PLAYER X'S TURN`);
