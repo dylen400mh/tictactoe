@@ -21,7 +21,93 @@ const gameBoard = (() => {
         }
     }
 
-    return { getBox, setBox, reset };
+    // returns index of best move on board
+    const findBestMove = (board) => {
+        let bestScore = -Infinity; // evaluation score of best move
+        let bestMove = -1 // index of best move
+
+        // loop through board looking for empty spots
+        for (let i = 0; i < board.length; i++) {
+            if (board[i] === "") {
+                board[i] === "O"; // try a move for player O (AI)
+                const score = minimax(board, 9, false) // "X" plays next and is minimizing
+                board[i] = ""; // undo the move
+
+                // overwrite the score and index if it is a better move
+                if (score > bestScore) {
+                    bestEval = score;
+                    bestMove = i;
+                }
+            }
+        }
+        return bestMove;
+    }
+
+    // used to get the evaluation score of the current state of the board
+    const evaluate = (board) => {
+        // Winning combinations
+        const lines = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+            [0, 4, 8], [2, 4, 6] // Diagonals
+        ];
+
+        // Check if the game is won by any player
+        for (let i = 0; i < lines.length; i++) {
+            const [a, b, c] = lines[i];
+            if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                return board[a] === 'O' ? 1 : -1; // 'O' wins: 1, 'X' wins: -1
+            }
+        }
+
+        // Check if the game is a draw
+        if (!board.includes('')) {
+            return 0; // Draw
+        }
+
+        // The game is not over yet
+        return null;
+    }
+
+    // MINIMAX ALGORITHM
+    const minimax = (board, depth, isMaximizing) => {
+        const result = evaluate(board) // gets evalutation score
+
+        // Base cases: game over or maximum depth reached
+        if (result !== null || depth === 0) {
+            return result;
+        }
+
+        // if maximizing player
+        if (isMaximizing) {
+            let maxScore = -Infinity;
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === '') {
+                    board[i] = 'O'; // Try a move for the 'O' player (AI)
+                    const score = minimax(board, depth - 1, false); // 'X' is the minimizing player
+                    board[i] = ''; // Undo the move
+                    maxScore = Math.max(maxScore, score);
+                }
+            }
+            return maxScore;
+        }
+
+        // if minimizing player
+        else {
+            let minScore = Infinity;
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === '') {
+                    board[i] = 'X'; // Try a move for the 'X' player
+                    const score = minimax(board, depth - 1, true); // 'O' is the maximizing player
+                    board[i] = ''; // Undo the move
+                    minScore = Math.min(minScore, score);
+                }
+            }
+            return minEval;
+        }
+    }
+
+    return { getBox, setBox, reset, findBestMove };
 })();
 
 // module to manipulate DOM
@@ -59,7 +145,10 @@ const displayController = (() => {
     // switches displayed gamemode
     const switchMode = (mode, button) => {
         if (gameController.getMode() === 0) {
-            initializeDisplay();
+            // adds board and restart button to screen and changes display message
+            board.style.display = "grid";
+            restartButton.style.display = "block"
+            displayController.setMessage(`PLAYER X'S TURN`)
         }
 
         else if (gameController.getMode() !== mode) {
@@ -78,13 +167,6 @@ const displayController = (() => {
 
         gameController.setMode(mode);
         button.style.border = "5px solid #eecc50"
-    }
-
-    // adds board and restart button to screen and changes message
-    const initializeDisplay = () => {
-        board.style.display = "grid";
-        restartButton.style.display = "block"
-        displayController.setMessage(`PLAYER X'S TURN`)
     }
 
     // update boxes on screen with signs based on board array values
