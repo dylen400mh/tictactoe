@@ -115,8 +115,8 @@ const displayController = (() => {
     const boxes = document.querySelectorAll(".box");
     const restartButton = document.querySelector(".restart-button");
     const messageContainer = document.querySelector(".message-container");
-    const aiButton = document.querySelector(".ai-button h1");
-    const playerButton = document.querySelector(".player-button h1");
+    const aiButton = document.querySelector(".ai-button");
+    const playerButton = document.querySelector(".player-button");
     const board = document.querySelector(".board")
 
     boxes.forEach(box => box.addEventListener("click", () => {
