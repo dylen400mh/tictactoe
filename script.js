@@ -30,7 +30,7 @@ const gameBoard = (() => {
         for (let i = 0; i < board.length; i++) {
             if (board[i] === "") {
                 board[i] = "O"; // try a move for player O (AI)
-                const score = minimax(board, 9, false) // "X" plays next and is minimizing
+                const score = minimax(board, 8, false) // "X" plays next and is minimizing
                 board[i] = ""; // undo the move
 
                 // overwrite the score and index if it is a better move
