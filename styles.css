@@ -33,9 +33,9 @@ header {
     gap: 2rem;
 }
 
+/* BOARD STARTS HIDDEN */
 .board {
-    display: grid;
-    background: lightgray;
+    display: none;
     grid-template-columns: repeat(3, 150px);
     grid-template-rows: repeat(3, 150px);
     width: 450px;
@@ -87,9 +87,6 @@ header {
     border-right: var(--background-color);
 }
 
-
-
-
 .sign {
     font-size: 5rem;
 }
@@ -114,4 +111,9 @@ button:hover,
 button:hover h1 {
     cursor: pointer;
     background: var(--hover-color);
+}
+
+/* RESTART BUTTON STARTS HIDDEN */
+.restart-button {
+    display: none;
 }

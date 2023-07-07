@@ -31,6 +31,7 @@ const displayController = (() => {
     const messageContainer = document.querySelector(".message-container");
     const aiButton = document.querySelector(".ai-button h1");
     const playerButton = document.querySelector(".player-button h1");
+    const board = document.querySelector(".board")
 
     boxes.forEach(box => box.addEventListener("click", () => {
         // play a round if there's no marker in the box or if game isn't over
@@ -45,35 +46,53 @@ const displayController = (() => {
         gameController.reset();
     })
 
+    // switches gamemode to singleplayer
     aiButton.addEventListener("click", () => {
-        if (gameController.getMode() !== 1) {
+        if (gameController.getMode() === 0) {
+            // adds board and restart button to screen and changes message
+            board.style.display = "grid";
+            restartButton.style.display = "block"
+            displayController.setMessage(`PLAYER X'S TURN`)
+        }
+
+        else if (gameController.getMode() !== 1) {
             // "unselect" other box
             playerButton.removeAttribute("style");
 
             //reset game
             clearBoard();
             gameController.reset();
-
-            // switch gamemode and set "selected" styles
-            gameController.setMode(1);
-            aiButton.style.border = "5px solid #eecc50"
         }
+
+        // switch gamemode and set "selected" styles
+        gameController.setMode(1);
+        aiButton.style.border = "5px solid #eecc50"
     })
 
+    // switches gamemode to multiplayer
     playerButton.addEventListener("click", () => {
-        if (gameController.getMode() !== 2) {
+        if (gameController.getMode() === 0) {
+            // adds board and restart button to screen and changes message
+            board.style.display = "grid";
+            restartButton.style.display = "block"
+            displayController.setMessage(`PLAYER X'S TURN`)
+        }
+
+        else if (gameController.getMode() !== 2) {
             // "unselect" other box
             aiButton.removeAttribute("style");
 
             //reset game
             clearBoard();
             gameController.reset();
-
-            // switch gamemode and set "selected" styles
-            gameController.setMode(2);
-            playerButton.style.border = "5px solid #eecc50"
         }
+
+        // switch gamemode and set "selected" styles
+        gameController.setMode(2);
+        playerButton.style.border = "5px solid #eecc50"
     })
+
+
 
     // update boxes on screen with signs based on board array values
     const updateBoard = (index) => {
