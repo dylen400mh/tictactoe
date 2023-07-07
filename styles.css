@@ -39,7 +39,6 @@ header {
     grid-template-columns: repeat(3, 150px);
     grid-template-rows: repeat(3, 150px);
     width: 450px;
-
 }
 
 .box {
@@ -49,6 +48,47 @@ header {
     display: grid;
     place-items: center;
 }
+
+/* USED TO REMOVE OUTER BORDER */
+
+.box:first-child {
+    border-top: var(--background-color);
+    border-left: var(--background-color);
+}
+
+.box:nth-child(2) {
+    border-top: var(--background-color);
+}
+
+.box:nth-child(3) {
+    border-top: var(--background-color);
+    border-right: var(--background-color);
+}
+
+.box:nth-child(4) {
+    border-left: var(--background-color);
+}
+
+.box:nth-child(6) {
+    border-right: var(--background-color);
+}
+
+.box:nth-child(7) {
+    border-left: var(--background-color);
+    border-bottom: var(--background-color);
+}
+
+.box:nth-child(8) {
+    border-bottom: var(--background-color)
+}
+
+.box:last-child {
+    border-bottom: var(--background-color);
+    border-right: var(--background-color);
+}
+
+
+
 
 .sign {
     font-size: 5rem;
