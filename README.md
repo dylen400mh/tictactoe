@@ -11,5 +11,3 @@ The project consists of a Tic-Tac-Toe game where players can place their marks o
 - Handling user input and interactions
 - Creating an AI opponent using the minimax algorithm
 
-### Note
-The minimax algorithm has not been implemented yet; however, it will be added soon.
