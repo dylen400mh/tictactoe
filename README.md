@@ -1,4 +1,7 @@
 # Tic-Tac-Toe Game
+
+[LIVE DEMO](https://dylen400mh.github.io/tictactoe/)
+
 This project is a Tic-Tac-Toe game implemented using HTML, CSS, and JavaScript. The goal is to demonstrate skills in organizing code using modules and factories, manipulating the DOM, implementing game logic, and creating an unbeatable AI using the minimax algorithm.
 
 ## Project Overview
